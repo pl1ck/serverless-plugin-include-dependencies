@@ -23,6 +23,10 @@ module.exports = function(filename, serverless, checkedFiles, cache) {
 
   function handle(name, basedir, optionalDependencies, peerDependenciesMeta) {
     const moduleName = requirePackageName(name.replace(/\\/, '/'));
+    if(moduleName === null){
+      serverless.cli.log(`[serverless-plugin-include-dependencies]: WARNING dependency not found: ${name}`);
+      return;
+    }
     const cacheKey = `${basedir}:${name}`;
 
     if (cache && cache.has(cacheKey)) {
